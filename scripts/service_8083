@@ -1,0 +1,46 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          service_8083
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Startup service EFARM version website
+# Description:       Startup service EFARM version website
+### END INIT INFO
+#export PATH=$PATH:/usr/local/bin
+#export NODE_PATH=$NODE_PATH:/usr/local/lib/node_modules
+# Include functions
+set -e
+. /lib/lsb/init-functions
+cd /home/devil/front-end/client
+start(){
+       su -- devil -c "forever --pidFile pid_8083.pid start server_8083.js"
+}
+
+stop(){
+       su -- devil -c "forever stop server_8083.js"
+}
+
+restart(){
+        su -- devil -c "forever restart server_8083.js"
+}
+
+case "$1" in
+        start)
+                echo "Start EFARM version website port 8083"
+                start
+                ;;
+        stop)
+                echo "Stop EFARM version website port 8083"
+                stop
+                ;;
+        restart)
+                echo "Restart EFARM version website port 8083"
+                restart
+                ;;
+        *)
+                echo "Usage: $0 {start|stop|restart}"
+                exit 1
+                ;;
+esac

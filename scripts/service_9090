@@ -1,0 +1,46 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          service_9090
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Startup service EFARM mobile
+# Description:       Startup service EFARM mobile
+### END INIT INFO
+#export PATH=$PATH:/usr/local/bin
+#export NODE_PATH=$NODE_PATH:/usr/local/lib/node_modules
+# Include functions
+set -e
+. /lib/lsb/init-functions
+cd /home/devil/front-end/mobile
+start(){
+       su -- devil -c "forever --pidFile pid_9090.pid start server_9090.js"
+}
+
+stop(){
+       su -- devil -c "forever stop server_9090.js"
+}
+
+restart(){
+        su -- devil -c "forever restart server_9090.js"
+}
+
+case "$1" in
+        start)
+                echo "Start EFARM mobile port 9090"
+                start
+                ;;
+        stop)
+                echo "Stop EFARM mobile port 9090"
+                stop
+                ;;
+        restart)
+                echo "Restart EFARM mobile port 9090"
+                restart
+                ;;
+        *)
+                echo "Usage: $0 {start|stop|restart}"
+                exit 1
+                ;;
+esac
